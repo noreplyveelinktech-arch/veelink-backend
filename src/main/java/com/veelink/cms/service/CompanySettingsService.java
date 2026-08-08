@@ -19,6 +19,21 @@ public class CompanySettingsService {
         return toResponse(getSettingsEntity());
     }
 
+    /**
+     * Public, unauthenticated variant used by the marketing site. Deliberately omits the internal
+     * email-routing fields (primaryEmail, noreplyEmail, enquiryNotificationEmail, CC/BCC) so those
+     * addresses are never exposed to anonymous visitors calling /api/public/company-settings.
+     */
+    public CompanySettingsResponseDto getPublicCompanySettings() {
+        CompanySettingsResponseDto response = toResponse(getSettingsEntity());
+        response.setPrimaryEmail(null);
+        response.setNoreplyEmail(null);
+        response.setEnquiryNotificationEmail(null);
+        response.setEnquiryCcEmail(null);
+        response.setEnquiryBccEmail(null);
+        return response;
+    }
+
     public ContactDetailsResponseDto getContactDetails() {
         CompanySettings settings = getSettingsEntity();
         return ContactDetailsResponseDto.builder()

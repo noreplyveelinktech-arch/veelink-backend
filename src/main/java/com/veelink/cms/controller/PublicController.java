@@ -42,7 +42,7 @@ public class PublicController {
 
     @GetMapping("/company-settings")
     public CompanySettingsResponseDto getCompanySettings() {
-        return companySettingsService.getCompanySettings();
+        return companySettingsService.getPublicCompanySettings();
     }
 
     @GetMapping("/home-content")
