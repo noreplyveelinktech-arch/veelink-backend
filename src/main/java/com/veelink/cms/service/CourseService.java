@@ -109,6 +109,17 @@ public class CourseService {
         return courseRepository.count();
     }
 
+    public List<CourseCategoryResponseDto> getCategories() {
+        return courseCategoryRepository.findByIsActiveTrueOrderByCategoryNameAsc().stream()
+                .map(category -> CourseCategoryResponseDto.builder()
+                        .id(category.getId())
+                        .categoryName(category.getCategoryName())
+                        .description(category.getDescription())
+                        .isActive(category.getIsActive())
+                        .build())
+                .toList();
+    }
+
     public long activeCourses() {
         return courseRepository.countByStatus(CourseStatus.ACTIVE);
     }
