@@ -6,6 +6,19 @@ spring:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/veelink_cms}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    hikari:
+      # Neon's free tier can auto-suspend the compute / drop idle connections well before
+      # Hikari's own defaults (30 min max-lifetime) would recycle them, causing
+      # "Failed to validate connection ... connection has been closed" warnings and failed
+      # requests. Keeping connections short-lived and validated forces Hikari to refresh
+      # them proactively instead of handing out ones Neon already closed.
+      maximum-pool-size: 5
+      minimum-idle: 1
+      idle-timeout: 30000
+      max-lifetime: 60000
+      connection-timeout: 30000
+      keepalive-time: 30000
+      validation-timeout: 5000
   jpa:
     hibernate:
       ddl-auto: update
